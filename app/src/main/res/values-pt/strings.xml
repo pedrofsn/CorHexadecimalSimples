@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">Cor Hexadecimal Simples</string>
+    <string name="cores_favoritas">Cores Favoritas</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="favoritar">Favoritar</string>
+    <string name="color_picker">Seletor de Cor</string>
+    <string name="rate">Avaliar o aplicativo</string>
+    <string name="sair">Sair</string>
+
+</resources>

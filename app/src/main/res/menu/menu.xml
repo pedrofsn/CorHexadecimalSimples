@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/colorPicker"
+        android:icon="@drawable/ic_action_color_picker"
+        android:title="@string/color_picker"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/rate"
+        android:title="@string/rate"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/exit"
+        android:title="@string/sair"
+        app:showAsAction="never" />
+
+</menu>
