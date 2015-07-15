@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
@@ -20,8 +19,10 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
+import simple.hexadecimal.color.AdUnitId;
 import simple.hexadecimal.color.R;
 import simple.hexadecimal.color.controller.Manipulador;
+import simple.hexadecimal.color.domain.ActivityGeneric;
 import simple.hexadecimal.color.fragments.MenuLateral;
 import simple.hexadecimal.color.fragments.SelecaoCorHEX;
 import simple.hexadecimal.color.interfaces.IControleDeCorSelecionada;
@@ -29,7 +30,7 @@ import simple.hexadecimal.color.interfaces.IMenuLateral;
 import simple.hexadecimal.color.utils.Navegacao;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
-public class Principal extends ActionBarActivity implements AmbilWarnaDialog.OnAmbilWarnaListener, IMenuLateral, IControleDeCorSelecionada {
+public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDialog.OnAmbilWarnaListener, IMenuLateral, IControleDeCorSelecionada {
 
     public static String ultimaCor = "vazio";
     public static boolean isTelaEmPe;
@@ -100,7 +101,7 @@ public class Principal extends ActionBarActivity implements AmbilWarnaDialog.OnA
     private void manipulaBanner() {
         // Criar o an�nncio intersticial
         interstitial = new InterstitialAd(this);
-        interstitial.setAdUnitId("ca-app-pub-3875707990385821/7368830597");
+        interstitial.setAdUnitId(AdUnitId.ID);
 
         // Criar a solicita��o de an�ncio
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -162,6 +163,9 @@ public class Principal extends ActionBarActivity implements AmbilWarnaDialog.OnA
         }
 
         switch (item.getItemId()) {
+            case R.id.image:
+                startActivity(new Intent(this, ActivityCoresDominantes.class));
+                break;
             case R.id.colorPicker:
                 new AmbilWarnaDialog(this, Manipulador.convertHexToInt(ultimaCor), this).show();
                 break;

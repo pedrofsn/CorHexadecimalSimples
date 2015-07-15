@@ -30,7 +30,7 @@ import com.google.android.gms.ads.AdView;
 
 import simple.hexadecimal.color.AdUnitId;
 import simple.hexadecimal.color.R;
-import simple.hexadecimal.color.activity.Principal;
+import simple.hexadecimal.color.activity.ActivityPrincipal;
 import simple.hexadecimal.color.controller.Manipulador;
 import simple.hexadecimal.color.dao.DataBaseHandler;
 import simple.hexadecimal.color.interfaces.IControleDeCorSelecionada;
@@ -142,7 +142,7 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
         adView = new AdView(getActivity());
         adView.setAdUnitId(AdUnitId.ID);
 
-        if (Principal.isTelaEmPe) {
+        if (ActivityPrincipal.isTelaEmPe) {
             adView.setAdSize(AdSize.BANNER);
         } else {
             adView.setAdSize(AdSize.SMART_BANNER);

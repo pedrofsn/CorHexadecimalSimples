@@ -2,6 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/image"
+        android:icon="@android:drawable/ic_menu_report_image"
+        android:title="@string/color_picker"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/colorPicker"
         android:icon="@drawable/ic_action_color_picker"
         android:title="@string/color_picker"
