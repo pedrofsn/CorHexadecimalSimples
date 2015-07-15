@@ -28,13 +28,13 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
+import simple.hexadecimal.color.AdUnitId;
 import simple.hexadecimal.color.R;
 import simple.hexadecimal.color.activity.Principal;
 import simple.hexadecimal.color.controller.Manipulador;
 import simple.hexadecimal.color.dao.DataBaseHandler;
 import simple.hexadecimal.color.interfaces.IControleDeCorSelecionada;
 import simple.hexadecimal.color.model.Cor;
-import simple.hexadecimal.color.utils.AdUnitId;
 
 public class SelecaoCorHEX extends Fragment implements OnClickListener {
 
