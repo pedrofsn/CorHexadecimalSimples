@@ -45,7 +45,7 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.principal);
+        setContentView(R.layout.activity_principal);
 
         configurarViews();
 
@@ -100,8 +100,6 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
         }
 
         manipulaBanner();
-
-        startActivity(new Intent(this, ActivityCoresDominantes.class));
     }
 
     private void manipulaBanner() {
