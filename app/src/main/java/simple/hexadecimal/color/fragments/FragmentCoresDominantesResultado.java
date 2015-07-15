@@ -1,12 +1,15 @@
 package simple.hexadecimal.color.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.ClipboardManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kimo.lib.alexei.calculus.ColorPaletteCalculus;
 
@@ -14,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import simple.hexadecimal.color.R;
-import simple.hexadecimal.color.domain.CalculateColorPaletteClicked;
+import simple.hexadecimal.color.controller.Manipulador;
 
 /**
  * Created by Kimo on 8/29/14.
@@ -72,12 +75,20 @@ public class FragmentCoresDominantesResultado extends Fragment {
     private void fillPalleteColors(List<Integer> colors, LinearLayout paletteContainer) {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        for (int color : colors) {
+        for (final int color : colors) {
 
             View palleteColor = inflater.inflate(R.layout.item_pallete, paletteContainer, false);
             palleteColor.setBackgroundColor(color);
+            palleteColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    String corHexadecimal = Manipulador.convertIntToHex(color);
+                    cm.setText(corHexadecimal);
 
+                    Toast.makeText(getActivity(), "A cor " + corHexadecimal + " foi copiada com sucesso!", Toast.LENGTH_SHORT).show();
+                }
+            });
             paletteContainer.addView(palleteColor);
         }
     }

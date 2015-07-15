@@ -38,13 +38,13 @@ public class FragmentCoresDominantes extends ProgressFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setContentShown(true);
-        getFragmentManager().beginTransaction().replace(R.id.info_area, new FragmentCoresDominantesParametros()).commit();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
+        EventBus.getDefault().post(new CalculateColorPaletteClicked(5));
     }
 
     @Override

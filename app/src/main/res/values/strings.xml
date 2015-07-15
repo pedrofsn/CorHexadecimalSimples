@@ -1,12 +1,13 @@
 <resources>
 
-    <string name="app_name">Simple Hex</string>
+    <string name="app_name">Simple Hexadecimal Color</string>
     <string name="cores_favoritas">Favorite Colors</string>
     <string name="compartilhar">Share</string>
     <string name="favoritar">Favorite</string>
     <string name="color_picker">Color Picker</string>
     <string name="rate">Rate app</string>
+    <string name="paleta">Palette</string>
+    <string name="calculado_em_dois_pontos">Calculated in:</string>
     <string name="sair">Exit</string>
-    <string name="admob_id">ca-app-pub-3875707990385821/7368830597</string>
 
 </resources>

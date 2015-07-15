@@ -100,6 +100,8 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
         }
 
         manipulaBanner();
+
+        startActivity(new Intent(this, ActivityCoresDominantes.class));
     }
 
     private void manipulaBanner() {
