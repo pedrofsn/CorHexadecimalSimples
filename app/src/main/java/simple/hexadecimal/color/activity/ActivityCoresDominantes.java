@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import simple.hexadecimal.color.R;
 import simple.hexadecimal.color.domain.ActivityGeneric;
-import simple.hexadecimal.color.fragments.ColorPaletteFragment;
+import simple.hexadecimal.color.fragments.FragmentCoresDominantes;
 
 /**
  * Created by pedro.sousa on 15/07/15.
@@ -16,11 +16,9 @@ public class ActivityCoresDominantes extends ActivityGeneric {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.principal);
 
-
-
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new ColorPaletteFragment(), ColorPaletteFragment.TAG)
+                .replace(R.id.content_frame, new FragmentCoresDominantes(), FragmentCoresDominantes.TAG)
                 .commit();
     }
 }

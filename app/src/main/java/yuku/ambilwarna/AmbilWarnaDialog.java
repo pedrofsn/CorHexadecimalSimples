@@ -32,6 +32,7 @@ public class AmbilWarnaDialog {
     final float[] currentColorHsv = new float[3];
     private final boolean supportsAlpha;
     int alpha;
+
     /**
      * Create an AmbilWarnaDialog.
      *

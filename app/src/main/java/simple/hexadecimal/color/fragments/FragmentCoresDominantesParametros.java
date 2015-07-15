@@ -15,16 +15,14 @@ import simple.hexadecimal.color.domain.CalculateColorPaletteClicked;
 /**
  * Created by Kimo on 8/29/14.
  */
-public class ColorPaletteParamsFragment extends Fragment {
+public class FragmentCoresDominantesParametros extends Fragment {
 
     private EditText mEditText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_palette_params, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_cores_dominantes_parametros, container, false);
         configure(view);
-
         return view;
     }
 

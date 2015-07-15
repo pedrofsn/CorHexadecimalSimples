@@ -47,8 +47,7 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
         super.onCreate(savedInstanceState);
         setContentView(R.layout.principal);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
-        mRelativeLayoutMenuEsquerdo = (RelativeLayout) findViewById(R.id.mRelativeLayoutMenuEsquerdo);
+        configurarViews();
 
         if (Build.VERSION.SDK_INT >= 11) {
             SpannableString tituloEstilizadoActionBar = new SpannableString(getString(R.string.app_name));
@@ -57,6 +56,11 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
         }
 
         isTelaNaVertical(getResources().getConfiguration());
+    }
+
+    private void configurarViews() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
+        mRelativeLayoutMenuEsquerdo = (RelativeLayout) findViewById(R.id.mRelativeLayoutMenuEsquerdo);
     }
 
     @Override

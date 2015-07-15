@@ -14,24 +14,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import simple.hexadecimal.color.R;
+import simple.hexadecimal.color.domain.CalculateColorPaletteClicked;
 
 /**
  * Created by Kimo on 8/29/14.
  */
-public class ColorPaletteResultsFragment extends Fragment {
+public class FragmentCoresDominantesResultado extends Fragment {
 
     public static final String TAG = ColorPaletteCalculus.class.getSimpleName();
+
     public static final String PALETTE = TAG + ".PALETTE";
     public static final String ELAPSED_TIME = TAG + ".ELAPSED_TIME";
 
     private List<Integer> mPalette;
     private long mElapsedTime;
 
-    public ColorPaletteResultsFragment() {
+    public FragmentCoresDominantesResultado() {
     }
 
-    public static ColorPaletteResultsFragment newInstance(ArrayList<Integer> palette, long elapsedTime) {
-        ColorPaletteResultsFragment fragment = new ColorPaletteResultsFragment();
+    public static FragmentCoresDominantesResultado newInstance(ArrayList<Integer> palette, long elapsedTime) {
+        FragmentCoresDominantesResultado fragment = new FragmentCoresDominantesResultado();
 
         Bundle args = new Bundle();
         args.putIntegerArrayList(PALETTE, palette);
@@ -54,7 +56,7 @@ public class ColorPaletteResultsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_palette_results, container, false);
+        View view = inflater.inflate(R.layout.fragment_cores_dominantes_resultado, container, false);
         configure(view);
         return view;
     }
