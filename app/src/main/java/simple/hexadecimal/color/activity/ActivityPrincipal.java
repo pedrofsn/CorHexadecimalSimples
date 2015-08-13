@@ -37,7 +37,8 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class ActivityPrincipal extends ActivityGeneric implements AdapterView.OnItemClickListener {
 
-    public static String TAG_FRAGMENT_MENU_LADO_ESQUERDO = "TAG_FRAGMENT_MENU_LADO_ESQUERDO";
+    public static String TAG_FRAGMENT_MENU_LADO_ESQUERDO = ActivityPrincipal.class.getCanonicalName();
+
     public static String ultimaCor = "";
     public static boolean isTelaEmPe;
     public ListAdapterMenuLateral adapterListaMenuLateral;
