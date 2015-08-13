@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "simple.hexadecimal.color"
         minSdkVersion 11
-        targetSdkVersion 21
-        versionCode 6
-        versionName "6.5.8.0"
+        targetSdkVersion 22
+        versionCode 7
+        versionName "6.5.8.1"
     }
     buildTypes {
         release {
@@ -21,7 +21,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.+'
     compile 'de.greenrobot:eventbus:2.4.0'
