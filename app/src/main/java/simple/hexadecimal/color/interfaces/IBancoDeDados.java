@@ -20,6 +20,6 @@ public interface IBancoDeDados {
 
     public Cor searchCor(String corPesuisada);
 
-    public boolean isCor(String corPesuisada);
+    public boolean hasCor(String corPesuisada);
 
 }

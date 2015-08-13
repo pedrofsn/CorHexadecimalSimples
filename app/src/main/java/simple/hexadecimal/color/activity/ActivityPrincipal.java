@@ -1,12 +1,17 @@
 package simple.hexadecimal.color.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
@@ -14,33 +19,35 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
 import simple.hexadecimal.color.AdUnitId;
 import simple.hexadecimal.color.R;
+import simple.hexadecimal.color.adapters.ListAdapterMenuLateral;
 import simple.hexadecimal.color.controller.Manipulador;
+import simple.hexadecimal.color.dao.DataBaseHandler;
 import simple.hexadecimal.color.domain.ActivityGeneric;
-import simple.hexadecimal.color.fragments.MenuLateral;
 import simple.hexadecimal.color.fragments.SelecaoCorHEX;
-import simple.hexadecimal.color.interfaces.IControleDeCorSelecionada;
-import simple.hexadecimal.color.interfaces.IMenuLateral;
-import simple.hexadecimal.color.utils.Navegacao;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
-public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDialog.OnAmbilWarnaListener, IMenuLateral, IControleDeCorSelecionada {
+public class ActivityPrincipal extends ActivityGeneric implements AdapterView.OnItemClickListener {
 
+    public static String TAG_FRAGMENT_MENU_LADO_ESQUERDO = "TAG_FRAGMENT_MENU_LADO_ESQUERDO";
     public static String ultimaCor = "";
     public static boolean isTelaEmPe;
-    public boolean primeiraAbertura = true;
+    public ListAdapterMenuLateral adapterListaMenuLateral;
     public SelecaoCorHEX fragmentSelecaoCor;
-    private DrawerLayout mDrawerLayout;
-    private RelativeLayout mRelativeLayoutMenuEsquerdo;
-    private ActionBarDrawerToggle mDrawerToggle;
+    public Toolbar toolbar;
+    private ListView listaFavorita;
+    //// daqui pra cima é do menu lateral
+    private AtualizadorMenuLateral atualizador = new AtualizadorMenuLateral();
+    private LocalBroadcastManager localBroadCast;
     private InterstitialAd interstitial;
-    private MenuLateral fragmentoMenuLateral;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,59 +56,76 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
 
         configurarViews();
 
-        if (Build.VERSION.SDK_INT >= 11) {
-            SpannableString tituloEstilizadoActionBar = new SpannableString(getString(R.string.app_name));
-            tituloEstilizadoActionBar.setSpan(new TypefaceSpan("sans-serif-light"), 0, tituloEstilizadoActionBar.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            getSupportActionBar().setTitle(tituloEstilizadoActionBar);
-        }
-
         isTelaNaVertical(getResources().getConfiguration());
-    }
 
-    private void configurarViews() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
-        mRelativeLayoutMenuEsquerdo = (RelativeLayout) findViewById(R.id.mRelativeLayoutMenuEsquerdo);
+        fragmentSelecaoCor = new SelecaoCorHEX();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragmentSelecaoCor);
+        fragmentTransaction.commit();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        localBroadCast = LocalBroadcastManager.getInstance(this);
+    }
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_navigation_drawer, android.R.string.ok, android.R.string.cancel) {
+    @Override
+    public void onPause() {
+        super.onPause();
+        localBroadCast.unregisterReceiver(atualizador);
+    }
 
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                supportInvalidateOptionsMenu();
+    @Override
+    public void onResume() {
+        super.onResume();
+        localBroadCast.registerReceiver(atualizador, new IntentFilter(TAG_FRAGMENT_MENU_LADO_ESQUERDO));
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ActivityPrincipal.TAG_FRAGMENT_MENU_LADO_ESQUERDO));
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView textView = (TextView) view.findViewById(R.id.hexColor);
+        setBackgroundColorFromActivity(textView.getText().toString());
+    }
+
+    private void configurarViews() {
+        listaFavorita = (ListView) findViewById(R.id.listaFavorita);
+        // menu lateral ^
+
+        // Initializing Toolbar and setting it as the actionbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        SpannableString tituloEstilizadoActionBar = new SpannableString(getString(R.string.app_name));
+        tituloEstilizadoActionBar.setSpan(new TypefaceSpan("sans-serif-light"), 0, tituloEstilizadoActionBar.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        toolbar.setTitle(tituloEstilizadoActionBar);
+
+        setSupportActionBar(toolbar);
+
+        // Initializing Drawer Layout and ActionBarToggle
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                super.onDrawerClosed(drawerView);
             }
 
-            /** Called when a drawer has settled in a completely open state. */
+            @Override
             public void onDrawerOpened(View drawerView) {
-                supportInvalidateOptionsMenu();
+                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+
+                super.onDrawerOpened(drawerView);
             }
         };
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        //Setting the actionbarToggle to drawer layout
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        if (Build.VERSION.SDK_INT >= 11) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
-
-        if (primeiraAbertura) {
-
-            mDrawerLayout.closeDrawer(mRelativeLayoutMenuEsquerdo);
-
-            fragmentSelecaoCor = new SelecaoCorHEX();
-            fragmentoMenuLateral = new MenuLateral();
-
-            Navegacao.showFragment(fragmentSelecaoCor, getSupportFragmentManager(), SelecaoCorHEX.TAG_SELECAO_COR_HEX, R.id.content_frame);
-
-            Navegacao.showFragment(fragmentoMenuLateral, getSupportFragmentManager(), MenuLateral.TAG_FRAGMENT_MENU_LADO_ESQUERDO, R.id.fragmentMenuLateral);
-
-            primeiraAbertura = false;
-        }
-
-        manipulaBanner();
+        //calling sync state is necessay or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
     }
 
     private void manipulaBanner() {
@@ -111,20 +135,6 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
         AdRequest adRequest = new AdRequest.Builder().build();
 
         interstitial.loadAd(adRequest);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-
-        isTelaNaVertical(newConfig);
     }
 
     private void isTelaNaVertical(Configuration orientacao) {
@@ -140,9 +150,9 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         displayInterstitial();
         finish();
+        super.onBackPressed();
     }
 
     public void displayInterstitial() {
@@ -159,16 +169,23 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
         switch (item.getItemId()) {
             case R.id.image:
                 startActivity(new Intent(this, ActivityCoresDominantes.class));
                 break;
             case R.id.colorPicker:
-                new AmbilWarnaDialog(this, Manipulador.convertHexToInt(ultimaCor), this).show();
+                new AmbilWarnaDialog(this, Manipulador.convertHexToInt(ultimaCor), new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                    @Override
+                    public void onCancel(AmbilWarnaDialog dialog) {
+                        dialog.getDialog().dismiss();
+                    }
+
+                    @Override
+                    public void onOk(AmbilWarnaDialog dialog, int color) {
+                        setBackgroundColorFromActivity(Manipulador.convertIntToHex(dialog.getColor()));
+                    }
+                }).show();
+
                 break;
             case R.id.rate:
                 try {
@@ -182,37 +199,23 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
                 System.exit(0);
                 break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void setBackgroundFromActivity(String cor) {
+    public void setBackgroundColorFromActivity(String cor) {
         if (fragmentSelecaoCor != null && cor != null) {
-            fragmentSelecaoCor.setBackgroundFromActivity(Manipulador.putHash(cor));
-        }
-        mDrawerLayout.closeDrawer(mRelativeLayoutMenuEsquerdo);
-    }
-
-    @Override
-    public void getCorSelecionada(String hexColor) {
-        if (ultimaCor.equals("")) {
-            ultimaCor = hexColor;
-            setBackgroundFromActivity(hexColor);
-
-        } else if (!hexColor.equals(ultimaCor)) {
-            ultimaCor = hexColor;
-            setBackgroundFromActivity(hexColor);
-
+            fragmentSelecaoCor.setBackgroundColor(Manipulador.putHash(cor));
         }
     }
 
-    @Override
-    public void onCancel(AmbilWarnaDialog dialog) {
-        dialog.getDialog().dismiss();
-    }
+    public class AtualizadorMenuLateral extends BroadcastReceiver {
 
-    @Override
-    public void onOk(AmbilWarnaDialog dialog, int color) {
-        setBackgroundFromActivity(Manipulador.convertIntToHex(dialog.getColor()));
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapterListaMenuLateral = new ListAdapterMenuLateral(ActivityPrincipal.this, DataBaseHandler.getInstance(ActivityPrincipal.this).readAllCor());
+            listaFavorita.setAdapter(adapterListaMenuLateral);
+        }
+
     }
 }

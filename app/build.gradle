@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "simple.hexadecimal.color"
-        minSdkVersion 11
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 7
-        versionName "6.5.8.1"
+        versionName "7.0"
     }
     buildTypes {
         release {
@@ -26,4 +26,5 @@ dependencies {
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.+'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.github.thiagokimo:alexei-library:1.4'
+    compile 'com.android.support:design:22.2.0'
 }

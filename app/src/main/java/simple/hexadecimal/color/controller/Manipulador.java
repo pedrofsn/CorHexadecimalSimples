@@ -63,11 +63,6 @@ public class Manipulador {
 
     public static int convertViewColorToInt(View view) {
         ColorDrawable drawable = (ColorDrawable) view.getBackground();
-        /*
-        if (Build.VERSION.SDK_INT >= 11 && Build.VERSION.SDK_INT < 20) {
-			return drawable.getColor();
-		}
-		* */
         try {
             Field field = drawable.getClass().getDeclaredField("mState");
             field.setAccessible(true);
@@ -96,5 +91,20 @@ public class Manipulador {
 
         return "RGB(" + r + "," + g + "," + b + ")";
 
+    }
+
+    public static int getRedFromHex(String hexColor) {
+        int hex = convertHexToInt(hexColor);
+        return (hex & 0xFF0000) >> 16;
+    }
+
+    public static int getGreenFromHex(String hexColor) {
+        int hex = convertHexToInt(hexColor);
+        return (hex & 0xFF00) >> 8;
+    }
+
+    public static int getBlueFromHex(String hexColor) {
+        int hex = convertHexToInt(hexColor);
+        return (hex & 0xFF);
     }
 }

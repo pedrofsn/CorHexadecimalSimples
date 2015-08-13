@@ -104,7 +104,7 @@ public class DataBaseHandler extends SQLiteOpenHelper implements IBancoDeDados {
     }
 
     @Override
-    public boolean isCor(String corPesquisada) {
+    public boolean hasCor(String corPesquisada) {
         corPesquisada = Manipulador.putHash(corPesquisada);
         SQLiteDatabase db = this.getReadableDatabase();
 
