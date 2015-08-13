@@ -5,5 +5,5 @@ package simple.hexadecimal.color;
  */
 public class AdUnitId {
 
-    public static final String ID = "ca-app-pub-";
+    public static final String ID = "ca-app-pub-3875707990385821/7368830597";
 }
