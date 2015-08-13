@@ -34,7 +34,14 @@ public class Manipulador {
     }
 
     public static int convertHexToInt(String hex) {
-        return Color.parseColor(putHash(hex));
+        try {
+            if (!"".equals(hex)) {
+                return Color.parseColor(putHash(hex));
+            }
+        } catch (Exception ignore) {
+
+        }
+        return 0;
     }
 
     public static ImageView criaCorTemporaria(Context context, int hex, OnClickListener onClick) {

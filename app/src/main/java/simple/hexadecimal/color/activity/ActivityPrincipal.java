@@ -32,7 +32,7 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDialog.OnAmbilWarnaListener, IMenuLateral, IControleDeCorSelecionada {
 
-    public static String ultimaCor = "vazio";
+    public static String ultimaCor = "";
     public static boolean isTelaEmPe;
     public boolean primeiraAbertura = true;
     public SelecaoCorHEX fragmentSelecaoCor;
@@ -82,8 +82,10 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (Build.VERSION.SDK_INT >= 11) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         if (primeiraAbertura) {
 
@@ -103,14 +105,11 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
     }
 
     private void manipulaBanner() {
-        // Criar o an�nncio intersticial
         interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId(AdUnitId.ID);
 
-        // Criar a solicita��o de an�ncio
         AdRequest adRequest = new AdRequest.Builder().build();
 
-        // Iiniciar o carregamento do an�ncio intersticia.
         interstitial.loadAd(adRequest);
     }
 
@@ -130,10 +129,8 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
 
     private void isTelaNaVertical(Configuration orientacao) {
         if (orientacao.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            // em p�
             isTelaEmPe = true;
         } else {
-            // deitado
             isTelaEmPe = false;
         }
 
@@ -190,7 +187,7 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
 
     @Override
     public void setBackgroundFromActivity(String cor) {
-        if (fragmentSelecaoCor != null) {
+        if (fragmentSelecaoCor != null && cor != null) {
             fragmentSelecaoCor.setBackgroundFromActivity(Manipulador.putHash(cor));
         }
         mDrawerLayout.closeDrawer(mRelativeLayoutMenuEsquerdo);
@@ -198,7 +195,7 @@ public class ActivityPrincipal extends ActivityGeneric implements AmbilWarnaDial
 
     @Override
     public void getCorSelecionada(String hexColor) {
-        if (ultimaCor.equals("vazio")) {
+        if (ultimaCor.equals("")) {
             ultimaCor = hexColor;
             setBackgroundFromActivity(hexColor);
 
