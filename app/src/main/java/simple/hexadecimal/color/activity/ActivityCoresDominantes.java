@@ -15,15 +15,16 @@ public class ActivityCoresDominantes extends ActivityGeneric {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.frame_layout);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new FragmentCoresDominantes(), FragmentCoresDominantes.TAG)
+                .replace(R.id.frameLayout, new FragmentCoresDominantes(), FragmentCoresDominantes.TAG)
                 .commit();
+    }
+
+    @Override
+    public void setLayout() {
+        setContentView(R.layout.toolbar_com_framelayout);
     }
 
     @Override

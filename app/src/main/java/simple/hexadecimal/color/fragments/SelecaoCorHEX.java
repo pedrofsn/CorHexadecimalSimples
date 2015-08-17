@@ -3,7 +3,6 @@ package simple.hexadecimal.color.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -105,7 +104,7 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 String hexSemEspacos = text.toString().replaceAll(" ", "");
                 hexSemEspacos = hexSemEspacos.toUpperCase();
-                setBackgroundColor(hexSemEspacos);
+                setBackgroundColor(hexSemEspacos, Manipulador.convertHexToInt(hexSemEspacos));
             }
 
             @Override
@@ -196,12 +195,6 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
                 Toast.makeText(getActivity(), "A cor " + getTextFromEditText() + " foi copiada com sucesso!", Toast.LENGTH_SHORT).show();
                 break;
         }
-
-        if (v instanceof ImageView) {
-            String corClicada = Manipulador.convertIntToHex(Manipulador.convertViewColorToInt(v));
-            editText.setText(corClicada.replace("#", ""));
-            setBackgroundColor(corClicada);
-        }
     }
 
     public void autoSmoothScroll() {
@@ -213,29 +206,26 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
         }, 100);
     }
 
-    public void setBackgroundColor(String color) {
-        favoritador(db.hasCor(color));
+    public void setBackgroundColor(String hex, int cor) {
+        favoritador(db.hasCor(hex));
 
-        int colorInt = Manipulador.convertHexToInt(color);
+        if (lastColorInt != cor) {
+            lastColorInt = cor;
+            historico.addView(Manipulador.criaCorTemporaria(getActivity(), cor, this));
 
-        if (lastColorInt != colorInt) {
-            lastColorInt = colorInt;
-            historico.addView(Manipulador.criaCorTemporaria(getActivity(), colorInt, this));
-
-            conteudo.setBackgroundColor(colorInt);
+            conteudo.setBackgroundColor(cor);
             if (adView != null)
-                adView.setBackgroundColor(colorInt);
+                adView.setBackgroundColor(cor);
 
             autoSmoothScroll();
 
-            editText.setText(Manipulador.removeHash(color));
+            editText.setText(Manipulador.removeHash(hex));
 
-            int corInvertida = getContrastColor(color);
+            int corInvertida = getContrastColor(hex);
             editText.setTextColor(corInvertida);
             textViewHashtag.setTextColor(corInvertida);
-            //((ActivityPrincipal) getActivity()).toolbar.setTitleTextColor(colorInt);
-
-            ((ActivityPrincipal) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(colorInt));
+            ((ActivityPrincipal) getActivity()).getToolbar().setTitleTextColor(corInvertida);
+            ((ActivityPrincipal) getActivity()).getToolbar().setBackgroundColor(cor);
         }
     }
 
