@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -20,10 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-
-import simple.hexadecimal.color.AdUnitId;
 import simple.hexadecimal.color.R;
 import simple.hexadecimal.color.adapters.ListAdapterMenuLateral;
 import simple.hexadecimal.color.controller.Manipulador;
@@ -36,8 +31,6 @@ public class ActivityPrincipal extends ActivityGeneric {
 
     public static String TAG_FRAGMENT_MENU_LADO_ESQUERDO = ActivityPrincipal.class.getCanonicalName();
 
-    public static String ultimaCor = "";
-    public static boolean isTelaEmPe;
     public ListAdapterMenuLateral adapterListaMenuLateral;
     public SelecaoCorHEX fragmentSelecaoCor;
 
@@ -45,18 +38,13 @@ public class ActivityPrincipal extends ActivityGeneric {
     //// daqui pra cima é do menu lateral
     private AtualizadorMenuLateral atualizador = new AtualizadorMenuLateral();
     private LocalBroadcastManager localBroadCast;
-    private InterstitialAd interstitial;
     private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        manipulaBanner();
-
         configurarViews();
-
-        isTelaNaVertical(getResources().getConfiguration());
 
         fragmentSelecaoCor = new SelecaoCorHEX();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -119,36 +107,11 @@ public class ActivityPrincipal extends ActivityGeneric {
         actionBarDrawerToggle.syncState();
     }
 
-    private void manipulaBanner() {
-        interstitial = new InterstitialAd(this);
-        interstitial.setAdUnitId(AdUnitId.ID);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        interstitial.loadAd(adRequest);
-    }
-
-    private void isTelaNaVertical(Configuration orientacao) {
-        if (orientacao.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            isTelaEmPe = true;
-        } else {
-            isTelaEmPe = false;
-        }
-
-        if (fragmentSelecaoCor != null)
-            fragmentSelecaoCor.manipulaBanner();
-    }
-
     @Override
     public void onBackPressed() {
-        displayInterstitial();
+        fragmentSelecaoCor.displayInterstitial();
         finish();
         super.onBackPressed();
-    }
-
-    public void displayInterstitial() {
-        if (interstitial.isLoaded())
-            interstitial.show();
     }
 
     @Override
@@ -165,7 +128,7 @@ public class ActivityPrincipal extends ActivityGeneric {
                 startActivity(new Intent(this, ActivityCoresDominantes.class));
                 break;
             case R.id.colorPicker:
-                new AmbilWarnaDialog(this, Manipulador.convertHexToInt(ultimaCor), new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                new AmbilWarnaDialog(this, fragmentSelecaoCor.getUltimaCorSelecionada(), new AmbilWarnaDialog.OnAmbilWarnaListener() {
                     @Override
                     public void onCancel(AmbilWarnaDialog dialog) {
                         dialog.getDialog().dismiss();

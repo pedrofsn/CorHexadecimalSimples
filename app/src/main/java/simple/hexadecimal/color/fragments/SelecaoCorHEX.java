@@ -2,6 +2,7 @@ package simple.hexadecimal.color.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import simple.hexadecimal.color.AdUnitId;
 import simple.hexadecimal.color.R;
@@ -45,10 +47,10 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
     private ImageView favoritar;
     private ImageView compartilhar;
     private ImageView copiar;
+    private int ultimaCorSelecionada;
 
     private DataBaseHandler db;
-
-    private int lastColorInt;
+    private InterstitialAd interstitial;
 
     private AdView adView;
 
@@ -116,6 +118,11 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
         editText.setText("ABCDEF");
     }
 
+    public void displayInterstitial() {
+        if (interstitial.isLoaded())
+            interstitial.show();
+    }
+
     public void manipulaBanner() {
         if (adView != null) {
             adView.setVisibility(View.GONE);
@@ -124,16 +131,19 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
             adView = null;
         }
 
-        adView = new AdView(getActivity());
-        adView.setAdUnitId(AdUnitId.ID);
+        AdRequest adRequest = new AdRequest.Builder().build();
 
-        if (ActivityPrincipal.isTelaEmPe) {
+        adView = new AdView(getActivity());
+        interstitial = new InterstitialAd(getActivity());
+
+        adView.setAdUnitId(AdUnitId.ID);
+        interstitial.setAdUnitId(AdUnitId.ID);
+
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             adView.setAdSize(AdSize.BANNER);
         } else {
             adView.setAdSize(AdSize.SMART_BANNER);
         }
-
-        AdRequest adRequest = new AdRequest.Builder().build();
 
         adView.setAdListener(new AdListener() {
             @Override
@@ -145,7 +155,9 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
 
         barraRodape.addView(adView);
         adView.setVisibility(View.GONE);
+
         adView.loadAd(adRequest);
+        interstitial.loadAd(adRequest);
     }
 
     @Override
@@ -177,6 +189,7 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
                     favoritador(true);
                     db.createCor(new Cor(getTextFromEditText(), true));
                 }
+
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent(ActivityPrincipal.TAG_FRAGMENT_MENU_LADO_ESQUERDO));
                 break;
 
@@ -194,6 +207,14 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
 
                 Toast.makeText(getActivity(), "A cor " + getTextFromEditText() + " foi copiada com sucesso!", Toast.LENGTH_SHORT).show();
                 break;
+
+            default:
+                if (v instanceof ImageView) {
+                    int intColor = Manipulador.convertViewColorToInt(v);
+                    String hexColor = Manipulador.convertIntToHex(intColor);
+                    setBackgroundColor(hexColor, intColor);
+                }
+                break;
         }
     }
 
@@ -209,8 +230,8 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
     public void setBackgroundColor(String hex, int cor) {
         favoritador(db.hasCor(hex));
 
-        if (lastColorInt != cor) {
-            lastColorInt = cor;
+        if (ultimaCorSelecionada != cor) {
+            ultimaCorSelecionada = cor;
             historico.addView(Manipulador.criaCorTemporaria(getActivity(), cor, this));
 
             conteudo.setBackgroundColor(cor);
@@ -239,4 +260,9 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
     private String getTextFromEditText() {
         return Manipulador.putHash(editText.getText().toString().trim());
     }
+
+    public int getUltimaCorSelecionada() {
+        return ultimaCorSelecionada;
+    }
+
 }
