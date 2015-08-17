@@ -14,9 +14,7 @@ import com.kimo.lib.alexei.calculus.ColorPaletteCalculus;
 
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import simple.hexadecimal.color.R;
-import simple.hexadecimal.color.domain.CalculateColorPaletteClicked;
 
 /**
  * Created by Kimo on 8/19/14.
@@ -25,13 +23,17 @@ public class FragmentCoresDominantes extends ProgressFragment {
 
     public static final String TAG = FragmentCoresDominantes.class.getSimpleName();
 
-    private ImageView mImage;
+    private ImageView imageView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cores_dominantes, container, false);
-        configure(view);
-        return view;
+        return inflater.inflate(R.layout.fragment_cores_dominantes, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        imageView = (ImageView) view.findViewById(R.id.imageView);
     }
 
     @Override
@@ -43,29 +45,14 @@ public class FragmentCoresDominantes extends ProgressFragment {
     @Override
     public void onResume() {
         super.onResume();
-        EventBus.getDefault().register(this);
-        EventBus.getDefault().post(new CalculateColorPaletteClicked(5));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
-    }
-
-    public void onEventMainThread(CalculateColorPaletteClicked event) {
-        performCalculus(event.getNumberOfColors());
-    }
-
-    private void configure(View view) {
-        mImage = (ImageView) view.findViewById(R.id.img);
+        performCalculus(5);
     }
 
     private void performCalculus(int numberOfColors) {
 
         Alexei.with(getActivity())
-                .analyze(mImage)
-                .perform(new ColorPaletteCalculus(Utils.getBitmapFromImageView(mImage), numberOfColors))
+                .analyze(imageView)
+                .perform(new ColorPaletteCalculus(Utils.getBitmapFromImageView(imageView), numberOfColors))
                 .showMe(new Answer<List<Integer>>() {
                     @Override
                     public void beforeExecution() {
