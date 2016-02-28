@@ -15,6 +15,7 @@ import com.kimo.lib.alexei.calculus.ColorPaletteCalculus;
 import java.util.List;
 
 import simple.hexadecimal.color.R;
+import simple.hexadecimal.color.activity.ActivityCoresDominantes;
 
 /**
  * Created by Kimo on 8/19/14.
@@ -37,6 +38,17 @@ public class FragmentCoresDominantes extends ProgressFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ActivityCoresDominantes) getActivity()).capturarImagem(false);
+            }
+        });
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setContentShown(true);
@@ -45,6 +57,11 @@ public class FragmentCoresDominantes extends ProgressFragment {
     @Override
     public void onResume() {
         super.onResume();
+        computarCores();
+
+    }
+
+    public void computarCores() {
         performCalculus(5);
     }
 
@@ -73,5 +90,13 @@ public class FragmentCoresDominantes extends ProgressFragment {
                     public void ifFails(Exception error) {
                     }
                 });
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 }

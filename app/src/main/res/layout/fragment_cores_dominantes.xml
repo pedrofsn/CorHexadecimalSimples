@@ -36,7 +36,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:src="@drawable/laura_vandervoort" />
+            android:src="@drawable/eumac" />
 
         <FrameLayout
             android:id="@+id/info_area"
