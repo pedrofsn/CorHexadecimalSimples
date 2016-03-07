@@ -39,11 +39,7 @@ public class DataBaseHandler extends SQLiteOpenHelper implements IBancoDeDados {
     }
 
     private boolean intToBoolean(int i) {
-        if (i == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return i == 1;
     }
 
     @Override
@@ -110,10 +106,7 @@ public class DataBaseHandler extends SQLiteOpenHelper implements IBancoDeDados {
 
         Cursor cursor = db.query(Cor.TABELA_COR_FAVORITADA, new String[]{Cor._id, Cor.FAVORITADA}, Cor.HEX_COR + "=?", new String[]{corPesquisada}, null, null, null, null);
 
-        if (cursor.moveToFirst())
-            return true;
-        else
-            return false;
+        return cursor.moveToFirst();
     }
 
     @Override

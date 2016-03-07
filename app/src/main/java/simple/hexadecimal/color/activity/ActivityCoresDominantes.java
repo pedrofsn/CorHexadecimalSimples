@@ -39,7 +39,7 @@ public class ActivityCoresDominantes extends ActivityGeneric {
         setContentView(R.layout.toolbar_com_framelayout);
     }
 
-    @Override
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
