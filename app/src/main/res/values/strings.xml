@@ -7,7 +7,7 @@
     <string name="color_picker">Color Picker</string>
     <string name="rate">Rate app</string>
     <string name="paleta">Palette</string>
-    <string name="calculado_em_dois_pontos">Calculated in:</string>
+    <string name="calculado_em_dois_pontos">Calculated in</string>
     <string name="sair">Exit</string>
 
 </resources>
