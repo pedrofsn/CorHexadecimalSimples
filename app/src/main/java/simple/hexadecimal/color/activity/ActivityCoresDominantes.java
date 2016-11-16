@@ -7,14 +7,13 @@ import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import simple.hexadecimal.color.utils.ImageIntentHandler;
-import simple.hexadecimal.color.utils.ImageUtils;
-
 import java.io.File;
 
 import simple.hexadecimal.color.R;
 import simple.hexadecimal.color.domain.ActivityGeneric;
 import simple.hexadecimal.color.fragments.FragmentCoresDominantes;
+import simple.hexadecimal.color.utils.ImageIntentHandler;
+import simple.hexadecimal.color.utils.ImageUtils;
 
 /**
  * Created by pedro.sousa on 15/07/15.
@@ -51,7 +50,7 @@ public class ActivityCoresDominantes extends ActivityGeneric {
     }
 
     public void capturarImagem(boolean camera) {
-        if(camera) {
+        if (camera) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             File f = ImageUtils.createImageFile(ImageUtils.getPackageName(this));
             if ((f != null) && f.exists()) {
