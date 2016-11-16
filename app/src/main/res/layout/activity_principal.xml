@@ -33,7 +33,6 @@
                 android:layout_height="1dp"
                 android:background="@color/cinzaClaro"
                 android:orientation="vertical" />
-            <!-- android:layout_marginBottom="5dp" -->
 
             <ListView
                 android:id="@+id/listaFavorita"
@@ -43,4 +42,5 @@
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

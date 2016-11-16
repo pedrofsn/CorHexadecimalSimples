@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/conteudo"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/conteudo"
+    <TextView
+        android:id="@+id/textViewHashtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/editText"
+        android:fontFamily="sans-serif-light"
+        android:text="#"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:digits="0123456789ABCDEFabcdef"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:inputType="textCapCharacters"
+        android:maxLength="6"
+        android:minWidth="95dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="365dp"
-        android:layout_weight="0.30"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textViewHashtag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/editText"
-            android:fontFamily="sans-serif-light"
-            android:text="#"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:digits="0 1 2 3 4 5 6 7 8 9 A B C D E F a b c d e f"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:inputType="textCapCharacters"
-            android:maxLength="6"
-            android:minWidth="95dp"
-            android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -70,19 +69,14 @@
                 android:contentDescription="@string/favoritar"
                 android:padding="5dp"
                 android:src="@drawable/nao_favorito" />
-        </RelativeLayout>
-    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/barraRodape"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        </RelativeLayout>
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:visibility="visible">
 
             <LinearLayout
@@ -93,6 +87,7 @@
                 android:background="@android:color/white"
                 android:orientation="horizontal" />
         </HorizontalScrollView>
+
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -109,7 +109,6 @@ public class ActivityPrincipal extends ActivityGeneric {
 
     @Override
     public void onBackPressed() {
-        fragmentSelecaoCor.displayInterstitial();
         finish();
         super.onBackPressed();
     }

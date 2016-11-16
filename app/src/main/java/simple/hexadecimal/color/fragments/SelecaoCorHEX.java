@@ -2,7 +2,6 @@ package simple.hexadecimal.color.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,13 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-
-import simple.hexadecimal.color.AdUnitId;
 import simple.hexadecimal.color.R;
 import simple.hexadecimal.color.activity.ActivityPrincipal;
 import simple.hexadecimal.color.controller.Manipulador;
@@ -42,7 +34,6 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
     private TextView textViewHashtag;
     private EditText editText;
     private LinearLayout historico;
-    private LinearLayout barraRodape;
     private HorizontalScrollView horizontalScrollView;
     private ImageView favoritar;
     private ImageView compartilhar;
@@ -50,9 +41,6 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
     private int ultimaCorSelecionada;
 
     private DataBaseHandler db;
-    private InterstitialAd interstitial;
-
-    private AdView adView;
 
     private static int getContrastColor(String hex) {
         double y = (299 * Manipulador.getRedFromHex(hex) + 587 * Manipulador.getGreenFromHex(hex) + 114 * Manipulador.getBlueFromHex(hex)) / 1000;
@@ -78,7 +66,6 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
         editText = (EditText) view.findViewById(R.id.editText);
         textViewHashtag = (TextView) view.findViewById(R.id.textViewHashtag);
         historico = (LinearLayout) view.findViewById(R.id.historico);
-        barraRodape = (LinearLayout) view.findViewById(R.id.barraRodape);
         horizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.horizontalScrollView);
         favoritar = (ImageView) view.findViewById(R.id.favoritar);
         compartilhar = (ImageView) view.findViewById(R.id.compartilhar);
@@ -93,8 +80,6 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
         favoritar.setOnClickListener(this);
         copiar.setOnClickListener(this);
         compartilhar.setOnClickListener(this);
-
-        manipulaBanner();
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,66 +101,6 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
         });
 
         editText.setText("ABCDEF");
-    }
-
-    public void displayInterstitial() {
-        if (interstitial.isLoaded())
-            interstitial.show();
-    }
-
-    public void manipulaBanner() {
-        if (adView != null) {
-            adView.setVisibility(View.GONE);
-            adView.destroy();
-            barraRodape.removeView(adView);
-            adView = null;
-        }
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        adView = new AdView(getActivity());
-        interstitial = new InterstitialAd(getActivity());
-
-        adView.setAdUnitId(AdUnitId.ID);
-        interstitial.setAdUnitId(AdUnitId.ID);
-
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            adView.setAdSize(AdSize.BANNER);
-        } else {
-            adView.setAdSize(AdSize.SMART_BANNER);
-        }
-
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                adView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        barraRodape.addView(adView);
-        adView.setVisibility(View.GONE);
-
-        adView.loadAd(adRequest);
-        interstitial.loadAd(adRequest);
-    }
-
-    @Override
-    public void onPause() {
-        adView.pause();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        adView.resume();
-    }
-
-    @Override
-    public void onDestroy() {
-        adView.destroy();
-        super.onDestroy();
     }
 
     @Override
@@ -235,8 +160,6 @@ public class SelecaoCorHEX extends Fragment implements OnClickListener {
             historico.addView(Manipulador.criaCorTemporaria(getActivity(), cor, this));
 
             conteudo.setBackgroundColor(cor);
-            if (adView != null)
-                adView.setBackgroundColor(cor);
 
             autoSmoothScroll();
 
